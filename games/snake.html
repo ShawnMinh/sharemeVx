@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			table{
+				margin:100px auto; z-index: 1000;
+			}
+			table,tr,td{
+				background: black;z-index: 1000;
+			}
+			td{
+				width: 18px;
+				height: 18px;
+				border:1px solid yellowgreen;z-index: 1000;
+			}
+			#score{
+				font-size: 500px; font-weight: bold;
+				line-height: 500px;text-align: center;
+				position: absolute;
+				top: 180px; z-index: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<span id="score">0</span>
+		<table id="oTable">
+			
+		</table>
+		
+		<script type="text/javascript">
+			var oTable = document.getElementById("oTable");
+			var tds = [];  //二维数组
+			var score=document.getElementById("score");
+			for(var i = 0;i < 20; i++){
+				var tr = document.createElement("tr");
+				var thisrowtd = []; 
+				for( var j = 0;j < 20; j++){
+					var td = document.createElement("td");
+					tr.appendChild(td); 
+					thisrowtd.push(td);  
+				}			
+				oTable.appendChild(tr);
+				tds.push(thisrowtd); 
+			}
+			function Snake(){
+				this.SnakeBody = [{x:10,y:10},{x:10,y:9},{x:10,y:8},{x:10,y:7}]
+				this.food={x:0,y:0};
+				this.bindEvent();
+				this.addfood();
+				this.plo=83;
+				this.keyco=0;
+				this.lock=1;
+			}
+			Snake.prototype.isdead=function()
+			{
+				if (this.SnakeBody[0].x<0 || this.SnakeBody[0].x>=20 || this.SnakeBody[0].y<0 || this.SnakeBody[0].y>=20) {
+					return 1;
+				}
+				
+				for (var i = 1; i < this.SnakeBody.length; i++)
+				{
+					if (this.SnakeBody[0].x==this.SnakeBody[i].x && this.SnakeBody[0].y==this.SnakeBody[i].y)
+					{
+						return 1;
+					} 
+				}
+				return 0;
+			}
+			
+			Snake.prototype.addfood=function()
+			{
+				this.food.x= Math.floor(Math.random()*20);
+				this.food.y= Math.floor(Math.random()*20);
+			}
+			Snake.prototype.eat=function()
+			{
+				
+				for(var i=0;i<this.SnakeBody.length;i++){
+					if (this.SnakeBody[i].x==this.food.x &&this.SnakeBody[i].y==this.food.y)
+					{
+						score.innerText=parseInt(score.innerText)+1;
+						this.addfood();
+						this.render();
+						this.lock=0;
+					}
+				}
+			}
+			Snake.prototype.render = function(){
+				for (var i = 0; i < 20; i++) 
+				{
+					for (var j = 0; j < 20; j++) 
+					{
+						tds[i][j].style.backgroundColor="black";
+					}
+				}
+				try{
+						//让自己的细胞这些小格加red类名
+					for(var i=0;i<this.SnakeBody.length;i++){
+						tds[this.SnakeBody[i].x][this.SnakeBody[i].y].style.backgroundColor= "red";
+					}
+					tds[this.food.x][this.food.y].style.backgroundColor="blue";
+				}catch(e){
+					//TODO handle the exception
+				}
+				
+			}
+			Snake.prototype.update=function(){
+				
+				if (this.lock==1) 
+				{
+					this.SnakeBody.pop()
+				}
+				this.lock=1;
+				switch(this.plo)
+				{
+					case 87: this.SnakeBody.unshift({ x : this.SnakeBody[0].x-1 , y : this.SnakeBody[0].y});break;
+					case 83: this.SnakeBody.unshift({ x : this.SnakeBody[0].x+1 , y : this.SnakeBody[0].y});break;
+					case 65: this.SnakeBody.unshift({ x : this.SnakeBody[0].x , y : this.SnakeBody[0].y-1});break;
+					case 68: this.SnakeBody.unshift({ x : this.SnakeBody[0].x , y : this.SnakeBody[0].y+1});break;
+				}
+				this.render();
+				//检查自己有没有吃到食物
+			}
+			Snake.prototype.bindEvent=function(e)
+			{
+				var that=this;
+				document.onkeydown =function(e)
+				{
+					e=event||window.event;
+					//  是否可以回头   可回头注释
+					if ( (e.keyCode==87 && that.keyco == 83) ||(e.keyCode==83 && that.keyco == 87) ||(e.keyCode==65 && that.keyco == 68) ||(e.keyCode==68 && that.keyco == 65 ) ) 
+					{
+						return 0;
+					}		
+					that.keyco=e.keyCode;
+					switch (e.keyCode)
+					{
+						case 87:that.plo=87;that.update() ;break;
+						case 83:that.plo=83;that.update() ;break;
+						case 65:that.plo=65;that.update() ;break;
+						case 68:that.plo=68;that.update() ;break;
+					}
+				}
+			}
+			
+			
+			var snake1 = new Snake();
+			var timer=null;
+			timer= setInterval(function()
+				{
+				snake1.update();
+				snake1.render();
+				snake1.eat();
+				if (snake1.isdead())
+				{
+					clearInterval(timer);
+					alert("you dead");
+				}
+			},200);
+			
+		</script>
+	</body>
+</html>
+
+	

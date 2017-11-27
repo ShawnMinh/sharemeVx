@@ -1,0 +1,62 @@
+﻿.moods-content{
+	width: 85%;
+	height: 100%;
+	position: relative;
+	margin: 0 auto;
+	background-color: #534846;
+	overflow: hidden;
+}
+.moods-content .moods-main{
+	width: 100%;
+	height:auto;
+	padding: 50px 0px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #DC143C;
+	font-size: 1.5em;
+	color: #FFC0CB;
+	text-align: center;	
+	position: relative;
+}
+.moods-content .moods-main::after{
+	content: "用户"attr(username)"发表于"attr(datatime)"";
+	font-size: 0.5em;
+	position: absolute;
+	right: 10px;
+	bottom:0px;
+}
+
+.moods-content .moods-pl-fb{
+	width: 100%;
+	height: 50px;
+	position: relative;
+}
+.moods-content .moods-pl-fb .pl_content{
+	width: 75%;
+	height: 100%;
+	float: left;
+}
+.moods-content .moods-pl-fb input{
+	cursor: pointer;
+}
+.moods-content .moods-pl-fb .pl_btn{
+	width: 24%;
+	height: 110%;
+	border: none;
+	background-color: #008B8B;
+	float: right;
+}
+.moods-pl p{
+	margin: 20px auto;
+	text-align: center;
+	color: #FAEBD7;
+	position: relative;
+}
+.moods-pl p::after{
+	content: ""attr(userpl)"发出的评论";
+	position: absolute;
+	color: #FFC0CB;
+	right: 10px;
+	bottom: -10px;
+	font-size: 0.5em;
+}

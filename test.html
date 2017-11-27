@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.works {
+				width: 85%;
+				height: 600px;
+				margin: 0 auto;
+			}
+			
+			.moods-main {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				overflow-y: scroll;
+			}
+			
+			.txt1 {
+				width: 80%;
+				height: 50px;
+				resize: none
+			}
+			
+			.moods_push {
+				width: 85%;
+				margin: 0 auto;
+				height: 100px;
+			}
+			
+			.moods-inner {
+				width: 85%;
+				height: auto;
+				margin: 0 auto;
+			}
+			
+			.moods-inner li {
+				list-style: none;
+				height: 100px;
+				margin: 20px auto;
+				position: relative;
+				background-color: pink;
+			}
+			
+			.moods-inner li .moods_left {
+				float: left;
+				width: 100px;
+				height: 100px;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.moods-inner li .moods_left img {
+				width: 100px;
+				height: 80px;
+			}
+			
+			.moods-inner li .moods_left span {
+				position: absolute;
+				width: 100%;
+				text-align: center;
+				bottom: 0px;
+				line-height: 20px;
+			}
+			
+			.moods-inner li .moods_right {
+				width: 80%;
+				height: auto;
+				float: right;
+			}
+			
+			.moods-inner li .moods_right p {
+				width: 100%;
+				height: auto;
+			}
+			
+			.moods-inner li .moods_right .func {
+				width: 30%;
+				height: 20px;
+				position: absolute;
+				background-color: #000000;
+				bottom: 0px;
+				right: 0px;
+			}
+			
+			.moods-inner li .moods_right .func span {
+				color: #F0F8FF;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body ng-app="zonemoods" ng-controller="zonemoodsgo">
+		<div class="works">
+			<div class='moods-main'>
+				<div class="moods_push">
+					<textarea class="txt1"></textarea>
+					<input type="button" class="moods_btn" value="发表心情" />
+				</div>
+				<mood-Go></mood-Go>
+			</div>
+		</div>
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var moods = angular.module("zonemoods", []);
+			moods.directive("moodGo", function() {
+				return {
+					restrict: "E", //E：标签指令，C：class指令，M：注释指令，A：属性指令
+					replace: true, //注视必须加         scope @字符串  = 数据   & 方法 传递的属性的参数是多少 用于自定义属性
+					//通用数据
+					controller: ['$scope', function($scope) {
+						$scope.userphotos = "img/home/u=2212141351,131582784&fm=27&gp=0.jpg";
+					}],
+					template: `
+								<div class="moods-inner">
+									<li>
+										<div class="moods_left" >
+											<img  ng-src="{{userphotos}}" />
+											<span>{{usernames}}</span>
+										</div>
+											
+										<div class="moods_right">
+											<div class="func">
+												<span class="commt" >评论({{comment}})</span>
+												<span class="load" >赞！({{loud}})</span>
+											</div>
+											<p>{{mood}}</p>
+										</div>
+									</li>
+								</div>
+					`
+				}
+			})
+
+			//存放数据{
+			moods.controller("zonemoodsgo", function($scope,$http) {
+				$scope.comment = 111;
+				$scope.loud = 2222;
+				$http({
+					method:"POST",   // GET POST JSONP
+					data:{
+						'username':"shawnminh"
+					},
+					url:"php/Zonemoods_Get.php"
+				}).then(function(response){
+					console.log(response.data)
+				})
+			
+				
+				
+				
+//						$.ajax({
+//							type: "post",
+//							url: "php/Zonemoods_Get.php",
+//							data: {
+//								'username': "shawnminh"
+//							},
+//							success: function(data) {
+//								var data = JSON.parse(data);
+//								data = data[0];
+//								console.log(data);
+//								return data;
+//							}
+//						});
+				//$scope.usernames =dataddadsadasdsad.username;
+				//$scope.mood = dataddadsadasdsad.mood;
+			
+				
+			})
+		</script>
+	</body>
+
+</html>

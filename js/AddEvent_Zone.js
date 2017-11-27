@@ -1,0 +1,23 @@
+﻿//添加点击事件 
+			$(".photo").click(function(){
+				location.href="zone_photos.html";
+			})
+			$(".diary").click(function(){
+				location.href="#";
+			})
+			$(".saysay").click(function(){
+				location.href="zone_mood.html";
+			})
+			$(".Game").click(function(){
+				location.href="zone_game.html";
+			})
+			$(".leaveword").click(function(){
+				location.href="zone_leaveword.html";
+			})
+			$(".set").click(function(){
+				location.href="zone_Set.html";
+			})
+			$(".m2").click(function(){
+				history.go(-1);
+				location.href=document.referrer;
+			})

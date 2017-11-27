@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Shareme- 留言板</title>
+		<link rel="stylesheet" type="text/css" href="css/zone_leaveword.css" />
+		<link rel="stylesheet" type="text/css" href="css/zone.css" />
+				<link class="zonestylephone" rel="stylesheet" type="text/css" href="#" />
+
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="inner">
+			<div class="userinf">
+				<p class="tips"></p>
+				<div class="userinf-inner">
+					<img class="user_photo" src="img/home/u=2789957751,1711926808&fm=27&gp=0.jpg" />
+					<p>博主:<span class="user_name">chirs</span></p>
+					<p>年龄:<span class="user_age">12</span></p>
+					<p>星座:<span class="user_constellation">双鱼座</span></p>
+					<p>地区:<span class="user_city">西安</span></p>
+					<p>签名:<span class="user_autograph">世界和平</span></p>
+				</div>
+				<div class="contact">
+					<p>contact:<span class="tel">  +862362173213</span></p>
+				</div>
+				<div class="leave">
+					<div class="m1">
+						<a href="index.html" class="gotoindex">
+							<-回到首页</a>
+					</div>
+					<div class="m2">
+						Back->
+					</div>
+				</div>
+			</div>
+			<div class="userworks">
+				<div class="worksXXX">
+					<div class="worksnav">
+						<div class="photo">相册</div>
+						<div class="saysay">心情</div>
+						<div class="Game">Game</div>
+						<div class="leaveword">留言板</div>
+						<div class="sharelink">贴链接</div>
+						<div class="#">功能开发中</div>
+					</div>
+					<div class="tools">
+						<!--这里是工具-->
+					</div>
+					<div class="set">
+						<div class="set-inner">
+							设置
+						</div>
+					</div>
+				</div>
+				<div class="works">
+					<div class="lw" ng-app="lw" ng-controller="lw-c">
+						<div class="title">
+							留言板！！！！！！！！！！！想说什么尽管说出来吧
+						</div>
+						<div class="word">
+							<input type="text" id="wrsome" placeholder="写点东西" ng-model="words" />
+							<button ng-click="Addlw()" > 留言 </button>
+						</div>
+						<div class="lyshow">
+							<li ng-repeat="x in lyc">
+								<p class="ctx" ng-bind="x.word"></p>
+								<span class="ctx-art">用户<span ng-click="gotothis(x.visiter)"  style="color:skyblue ;cursor:pointer" > {{x.visiter}}</span> 于 {{x.nowtime}}发出的留言</span>
+								<div class="delely" ng-show="XXX" lwid="{{x.wordid}}" ng-click="Delelw()">
+									删除留言
+								</div>
+							</li>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var lw = angular.module("lw", []);
+			lw.controller("lw-c", function($scope, $http, $httpParamSerializerJQLike) {
+				$scope.showlw = showlw;
+				$scope.Addlw = Addlw;
+				$scope.Delelw = Delelw;
+				$scope.gotothis = gotothis;
+				showlw();
+				if (username!=visiter) {
+					$scope.XXX=0;
+				}else{
+					$scope.XXX=1;
+				}
+				function gotothis(gotowhere){
+				localStorage.setItem("username", gotowhere);
+				location.href = "zone.html"
+				
+				}
+				function Delelw() {
+					console.log(this.x.wordid);
+					var wordid = this.x.wordid;
+					var url_ = "php/Zoneleaveword_delete.php";
+					$http({
+						method: "get",
+						params: {
+							username:username,
+							wordid: wordid
+						},
+						url: url_
+					}).then(function(respones) {
+						console.log(respones);
+alert("删除中 ...");
+						if(respones.data) {
+							showlw();
+						}
+					})
+				}
+				
+				function Addlw() {
+					
+					var url_ = "php/Zoneleaveword_update.php";
+					var words = $scope.words;
+					var myDate = new Date();
+					var nowtime = myDate.toLocaleDateString() + "-" + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+					if(!words || words.length < 5) {
+						alert("五个字都不肯留！");
+						return;
+					}
+					alert("留言成功 ！");
+					$http({
+						method: "get",
+						params: {
+							username:username,
+							visiter: visiter,
+							word: words,
+							nowtime: nowtime
+						},
+						url: url_
+					}).then(function(respones) {
+						if(respones.data) {
+							$scope.words="";
+							console.log(respones)
+							showlw();
+						}
+					})
+				}
+
+				function showlw() {
+					var url_ = "php/Zoneleaveword_GET.php";
+					$http({
+						method: "get",
+						params:{
+							username:username,
+						},
+						url: url_
+					}).then(function(respones) {
+						console.log(respones);
+						if(respones.data) {
+							$scope.lyc = respones.data.data;
+						}
+					})
+				}
+
+			})
+		</script>
+
+		<!--添加侧栏事件 -->
+		<script src="js/AddEvent_Zone.js" type="text/javascript" charset="utf-8"></script>
+		<!--页面加载后要做的  获取用户信息！-->
+		<script src="js/Load_firstdo.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

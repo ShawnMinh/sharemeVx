@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<canvas id="can" width="1400" height="600"></canvas>
+		<script type="text/javascript">
+			var ctx=$("#can").get(0).getContext("2d");
+			drawacircle(100,100,10)	;
+			var timer=null;
+			var xx=100;
+			var yy=100;
+			$(document).mousemove(function(){
+				clearInterval(timer);
+				var currentX=event.clientX;
+				var currentY=event.clientY;
+				console.log(event.clientX-xx,event.clientY-yy);
+				stepx=0;
+				stepy=0;
+				if (event.clientX-xx>1) {
+					stepx=1;
+				}
+				if(event.clientX-xx<-1){
+					stepx=-1;
+				}
+				if (event.clientY-yy>1) {
+					stepy=1;
+				}
+				if (event.clientY-yy<-1){
+					stepy=-1;
+				}
+				timer=setInterval(function(){
+					if (  Math.abs(xx-currentX)<5&&Math.abs(yy-currentY)<5) {
+						clearInterval(timer);
+					}
+					xx+=stepx; 
+					yy+=stepy;
+					drawacircle(xx,yy,10);
+				},5)
+			})
+			
+			
+			function drawacircle(x,y,r){
+				$("#can").get(0).height=$("#can").get(0).height;   //清空画布 
+				ctx.lineWidth="1";
+				ctx.beginPath();
+				ctx.strokeStyle = "blue";
+			 	var circle = {
+				        x : x,    //圆心的x轴坐标值
+				        y : y,    //圆心的y轴坐标值
+				        r : r      //圆的半径
+				 };
+				 //沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧线
+				 ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI*2, false); 
+				ctx.stroke(); // 进行绘制	
+				
+			}
+		</script>
+	</body>
+</html>

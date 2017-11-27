@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>ShareMe----登录/注册</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="css/logandreg.css" />
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+
+	<body>
+		<div class="bj">
+			<div class="box">
+				<div class="logo">
+					<span class="logo0">ShareMe</span>
+					<span class="logo0 logo02">分享美好</span>
+				</div>
+				<!--以下登录-->
+				<div class="login mxx">
+					<p class="xxs">用户登录</p>
+					<form action="#">
+						<p>
+							<input type="text" name="" class="username" placeholder="请输入用户名" value="" />
+						</p>
+						<p>
+							<input type="password" name="" class="password" placeholder="请输入密码" value="" />
+						</p>
+						<p>
+							<p>
+								<input type="button" value="立即登录" class="btn_login" />
+							</p>
+							<p>
+								<a href="#" class="gotoreg">去注册////</a>
+							</p>
+					</form>
+				</div>
+				<!--以下注册-->
+				<div class="register mxx">
+					<p class="xxs">用户注册</p>
+					<form action="#">
+						<p>
+							<input type="text" name="" class="reg_username" placeholder="请输入用户名" value="" />
+						</p>
+						<p>
+							<input type="password" name="" class="reg_password" placeholder="请输入密码" value="" />
+						</p>
+						<p>
+							<input type="password" name="" class="reg_password2" placeholder="请再次输入密码" value="" />
+						</p>
+						<p>
+						<p>
+							<input type="button" value="立即注册" class="btn_reg" />
+						</p>
+						<p>
+							<a href="#" class="gotologin">\\\\已有账号？ 去登录</a>
+						</p>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+	<!--	//通用-->
+		<script type="text/javascript">
+			
+	$(".gotologin").click(function(){
+				$(".login").show();
+				$(".register").hide();
+			})
+			$(".gotoreg").click(function(){
+				$(".login").hide();
+				$(".register").show();
+})
+				
+	</script>
+		
+		<!--//以下注册-->
+		<script type="text/javascript">
+			document.documentElement.style.overflow = 'hidden';
+			$(function() {
+				var px = 0;
+				//以下是注册点击后事件 
+				$(".btn_reg").click(function() {
+					if($(".reg_password").val().length<5 || $(".reg_username").val().lenght<2){
+						alert("密码长度必须大于5，用户名长度必须大于2");
+						return;
+					}
+					if($(".reg_password").val() == $(".reg_password2").val()) {
+
+						$.ajax({
+							type: "post",
+							url: "php/Checkuser.php",
+							datatype: "json",
+							data: {
+								"username": $(".reg_username").val(),
+								"password": $(".reg_password").val(),
+								"power": 0,
+								"status": "register",
+							},
+							success: function(data) {
+								var data = JSON.parse(data);
+								console.log(data);
+								if(data.code == 1) {
+									$(".login").show();
+									$(".username").val($(".reg_username").val());
+									$(".password").val($(".reg_password").val());
+									$(".register").hide();
+								} else {
+									alert("用户已注册");
+									$(".reg_username").parent().css("background-color", "red");
+									$(".reg_password2").parent().css("background-color", "red");
+									$(".reg_password").parent().css("background-color", "red");
+								}
+							}
+						});
+					} else {
+						alert("两次 密码 不一致 ");
+						$(".reg_password").parent().css("background-color", "red");
+						$(".reg_password2").parent().css("background-color", "red");
+					}
+				})
+			})
+		</script>
+		<!--//以下登录-->
+		<script type="text/javascript">
+			document.documentElement.style.overflow = 'hidden';
+			$(function() {
+				$(".btn_login").click(function() {
+					$.ajax({
+						type: "post",
+						url: "php/Checkuser.php",
+						datatype: "json",
+						data: {
+							"username": $(".username").val(),
+							"password": $(".password").val(),
+							"power": 0,
+							"status": "login",
+						},
+						success: function(data) {
+console.log(data);
+							var data = JSON.parse(data);
+							console.log(data );
+							if(data.code==1) {
+								window.localStorage.setItem("visiter", $(".username").val())
+								window.localStorage.setItem("token", data.token);
+								window.localStorage.setItem("username", $(".username").val())
+								window.localStorage.setItem("password", $(".password").val())
+								location.href = "index.html";
+							}else{
+								alert("账户 或密码 输入 错误 ");
+								$(".username").parent().css("background-color", "red");
+								$(".password").parent().css("background-color", "red");
+							}
+						}
+					});
+				})
+			})
+		</script>
+		<script type="text/javascript">
+			
+			console.log(window.screen.height)
+			$(".bj").height(window.screen.height);
+			var hash = location.hash;
+			hash = hash.split("#")[1];
+			console.log(parseInt(hash));
+			if(parseInt(hash)) {
+				$(".login").show();
+				$(".register").hide();
+			} else {
+				$(".login").hide();
+				$(".register").show();
+			}
+			$("input").blur(function() {
+				if(this.type == "button") {
+					return;
+				}
+				if(this.value) {
+					$(this).parent().css("background-color", "greenyellow");
+				} else {
+					$(this).parent().css("background-color", "red");
+				}
+			})
+			
+			var too=localStorage.getItem("token");
+			if (too) {
+				console.log("token="+too);
+				alert("已登录，即将跳转");
+				location.href="index.html";
+			}
+		</script>
+
+	</body>
+
+</html>

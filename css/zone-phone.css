@@ -1,0 +1,163 @@
+﻿body {
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+.inner{
+	height: auto;
+}
+.inner .userinf{
+	width: 100%;
+	position: relative;
+	float: none;
+	height: auto;
+}
+.inner .userinf .tips{
+	width: 100%;
+	height: 20px;
+	margin: 0 auto;
+}
+.inner .userinf .userinf-inner{
+	width: 100%;
+	height: 150px;
+	overflow: hidden;
+	margin: 0;
+}
+.inner .userinf .userinf-inner .user_photo{
+	float: left;
+	margin: 0;
+	margin-left: 30px;
+	width: 150px;
+	height: 150px;
+}
+.inner .userinf .userinf-inner p{
+	margin:15px;
+}
+.inner .userinf .contact{
+	display: none;
+	position: absolute;
+	width: 100%;
+	top:65px;
+	left: 78px;
+}
+.inner .userinf .leave{
+	position: fixed;
+	bottom: 0px;
+	z-index: 9999;
+}
+
+.inner .userworks {
+	width: 100%;
+	height: auto;
+	float: none;
+	position: relative;
+	overflow: hidden;
+}
+
+.inner .userworks .cli{
+	width: 100%;
+	height: auto;
+	float: none;
+	background-color: #6dd3ce;
+	position: absolute;
+	z-index: 9999;
+}
+.inner .userworks .cli::after{
+	content: "三";
+	position: absolute;
+	font-size:30px;
+	top: 10px;
+	right:0px;
+}
+
+.inner .userworks .worksXXX{
+	margin-top: 50px;
+	width: 100%;
+	height: auto;
+	display: none;
+	position: relative;
+	z-index: 9999;
+}
+.inner .userworks .worksXXX div{
+	position: relative;
+	float: none;
+}
+.inner .userworks .worksXXX .set {
+	position: relative;
+}
+.inner .userworks .works{
+	height: auto;
+	margin-left: 0px;
+	width: 100%;
+	position: relative;
+	float: none;
+}
+
+.setuserinf {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+.setuserinf .setinformation .newinfor{
+	height: 50px;
+}
+.inner .userworks .works .photos-main{
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+.inner .userworks .works .photos-main li {
+	width: 25%;
+	height: 200px;
+	background-color: #FFFFFF;
+	float: left;
+	margin: 20px 10px;
+	text-align: center;
+	overflow: hidden;
+}
+.inner .userworks .works .moods-main {
+	margin-top: 50px;
+	
+	width: 100%;
+	height: auto;
+	overflow-y: scroll;
+}
+.inner .userworks .works .moods-main .writemoods{
+	width: 100%;
+	margin:0px 0px;
+}
+.inner .userworks .works .moods-main .writemoods .moods_bottom .mood_content {
+	width: 70%;
+	margin: 2px;
+
+}
+.inner .userworks .works .moods-main .writemoods .moods_bottom .moos_go {
+	width:23%;
+	margin-left: 0px;
+	font-size:0.6rem;
+}
+ .moods-inner li .moods_iin .func {
+ 	left:-30px;
+	width:120%;
+	font-size: 10px;
+}
+
+.inner .userworks .works .moods-main .moods-inner li .moods_iin .func .zonemoodcz {
+	width: 80px;
+}
+.moods-content{
+margin-bottom: 50px;
+	width: 100%;
+}
+.moods-content .moods-pl-fb .pl_content{
+	width: 75%;
+
+}
+.moods-content .moods-pl-fb .pl_btn{
+	width: 23%;
+
+}
+.lw {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	width: 100%;
+	height: auto;
+}

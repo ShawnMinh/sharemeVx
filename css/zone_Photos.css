@@ -1,0 +1,26 @@
+/*相册开始*/
+
+.inner .userworks .works .photos-main {
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.inner .userworks .works .photos-main li {
+	list-style: none;
+	width: 22.22%;
+	height: 200px;
+	background-color: #FFFFFF;
+	float: left;
+	margin: 20px 10px;
+	text-align: center;
+}
+
+.inner .userworks .works .photos-main li img {
+	display: block;
+	width: 100%;
+	height: 90%;
+}
+
+
+/*相册结束*/

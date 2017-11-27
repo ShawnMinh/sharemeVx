@@ -1,0 +1,94 @@
+*{
+	margin: 0;
+	padding: 0;	
+}
+
+/*相映式布局*/
+@media only screen and (min-width: 0px) and (max-width: 1025px) {
+
+	html {
+		font-size: 80%;
+	}
+	.bj .box{
+		width:70%;
+		margin-left:18%;
+		margin-top: 15%;
+	}
+}
+
+
+
+
+@media only screen and (min-width:1025px) and (max-width: 2400px) {
+
+	html {
+		font-size: 100%;
+	}
+	.bj .box{
+		width:30%;
+		margin-left:66%;
+		margin-top: 6%;
+	}
+}
+
+
+.bj{
+	width: 100%;
+	height:770px;
+	position: relative;
+	overflow: hidden;
+	background-image:url(../img/home/p5.jpg);
+	background-size: 100% 100%;
+}
+.bj .box{
+	height:70%;
+	position: relative;
+}
+.bj .box .logo{
+	width: 85%;
+	height: 100px;
+	margin: 20px auto;
+	color: #FFFFFF;
+	font-family:'Lato',sans-serif;
+	text-decoration: none;
+}
+ .bj .box .logo .logo0{
+	width: 80%;
+	line-height: 88px;
+	font-size: 2.5em;
+	font-variant: hojo-kanji;
+}
+.bj .box .logo .logo02{
+	width: 20%;
+	line-height: 105px;
+	font-size: 0.5em;
+}
+.bj .box .mxx{
+	width:80%;
+	height:400px;
+	margin: 0 auto;
+	position: relative;
+	display: none;
+}
+ p{
+	display: block;
+	width: 100%;
+	height: 50px;
+	margin: 10px auto;
+}
+ .xxs{
+	text-align: center;
+	line-height: 50px;
+	font-size: 1.5em;
+	color:#3385FF;
+}
+ input{
+	width: 97%;
+	height: 50px;
+	border: none;
+	cursor: pointer;	
+}
+a{
+	color: #FFFFFF;
+	text-decoration: none;
+}

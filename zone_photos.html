@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Shareme- zone</title>
+		<link rel="stylesheet" type="text/css" href="css/zone.css" />
+		<link rel="stylesheet" type="text/css" href="css/zone_Photos.css" />
+				<link class="zonestylephone" rel="stylesheet" type="text/css" href="#" />
+
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="inner">
+			<div class="userinf">
+				<p class="tips"></p>
+				<div class="userinf-inner">
+					<img class="user_photo" src="img/home/u=2789957751,1711926808&fm=27&gp=0.jpg" />
+					<p>博主:<span class="user_name">chirs</span></p>
+					<p>年龄:<span class="user_age">12</span></p>
+					<p>星座:<span class="user_constellation">双鱼座</span></p>
+					<p>地区:<span class="user_city">西安</span></p>
+					<p>签名:<span class="user_autograph">世界和平</span></p>
+				</div>
+				<div class="contact">
+					<p>contact:<span class="tel">  +862362173213</span></p>
+				</div>
+				<div class="leave">
+					<div class="m1">
+						<a href="index.html" class="gotoindex">
+							<-回到首页</a>
+					</div>
+					<div class="m2">
+						Back->
+					</div>
+				</div>
+			</div>
+			<div class="userworks">
+				<div class="worksXXX">
+					<div class="worksnav">
+						<div class="photo">相册</div>
+						<div class="saysay">心情</div>
+						<div class="Game">Game</div>
+						<div class="leaveword">留言板</div>
+						<div class="sharelink">贴链接</div>
+						<div class="#">功能开发中</div>
+
+					</div>
+					<div class="tools">
+						<!--这里是工具-->
+						tools
+						<p>
+							<input type="file" accept="image/*" id="readfile" class="readfile" onchange="imggo(this.files)" hidden="hidden" />
+							<label for="readfile">上传照片</label>
+						</p>
+						<p class="deletephotos">删除照片</p>
+					</div>
+					<div class="set">
+						<div class="set-inner">
+							设置
+						</div>
+					</div>
+				</div>
+				<div class="works">
+					<div class='photos-main'>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--照片功能开始-->
+		<!--显示照片-->
+		<script type="text/javascript">
+			$(function() {
+				GetPhotos();
+			})
+
+			//删除照片
+			function DeletePhotos() {
+				if(username) {
+					$.ajax({
+						type: "post",
+						url: "php/Zonephotos_Delete.php",
+						data: {
+							'username': username,
+							'imgurl': arra_deletephotos
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+
+						}
+					});
+				}
+			}
+
+			function GetPhotos() {
+				$.ajax({
+					type: "post",
+					url: "php/Zonephotos_Get.php",
+					data: {
+						'username': username
+					},
+					success: function(data) {
+						var data = JSON.parse(data);
+						data = data.photos;
+						var html = "";
+						if(!data.length) {
+							html = "<span class='noting' style='font-size: 150px'>空空如也</span>";
+						}
+						for(var i = 0; i < data.length; i++) {
+							var ml=data[i].split("img/zone/userphotos/")[1];
+							html += "<li><img ppath='" + data[i] + "' src='" + data[i] + "'/>"+ml+"</li>";
+						}
+						$(".photos-main").html(html);
+						//添加选择图片事件
+						addClickDeleteEvent();
+					}
+				});
+			}
+		</script>
+		<!--删除照片-->
+		<script type="text/javascript">
+			function addClickDeleteEvent() {
+				$(".photos-main").get(0).index = 0;
+				$(".photos-main li img").click(function() {
+					if($(".photos-main").get(0).index >= 9) {
+						alert("最多只能选中9个图片片");
+						return;
+					}
+					this.index = !this.index;
+					if(this.index) {
+						$(this).attr("ischoice", 1);
+						$(this).css("border", "2px solid greenyellow");
+						$(".photos-main").get(0).index++;
+					} else {
+						$(this).attr("ischoice", 0);
+						$(".photos-main").get(0).index--;
+						$(this).css("border", "none");
+					}
+				})
+				$(".deletephotos").click(function() {
+					if(!$(".photos-main").get(0).index) {
+						alert("未选中图片!");
+						return;
+					}
+					//选中的图片存入数组
+					var deletephotoslist = new Array();
+					for(var i = 0; i < $(".photos-main li img").length; i++) {
+						var objimg = $(".photos-main li img").get(i);
+						if($(objimg).attr("ischoice")) {
+							deletephotoslist.push($(objimg).attr("ppath"));
+						}
+					}
+					//arra_deletephotos.push($(this).attr("ppath"));
+					//数组转换为json格式 以便于传递
+					var jsondelephotos = JSON.stringify(deletephotoslist);
+					$.ajax({
+						type: "post",
+						url: "php/Zonephotos_Delete.php",
+						data: {
+							'username': username,
+							'photoslist': jsondelephotos,
+						},
+						cache: false,
+						success: function(data) {
+							var data = JSON.parse(data)
+							console.log(data);
+							GetPhotos();
+						}
+					});
+				})
+			}
+		</script>
+		<!--上传照片-->
+		<script type="text/javascript">
+			function imggo(files) {
+				var file = files[0];
+				var reader = new FileReader();
+				reader.onload = function() {
+					//console.log(this.result);
+					imgurl = this.result;
+					//str = str.substring(str.indexOf(',') + 1);
+					str = imgurl.substring(imgurl.indexOf(',') + 1);
+					$.ajax({
+						type: "post",
+						url: "php/Zonephotos_update.php",
+						datatype: "json",
+						data: {
+							'imgurl': imgurl,
+							'username': username,
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+							GetPhotos();
+							alert("照片上传成功!!");
+							console.log(data);
+						}
+					});
+				}
+				reader.readAsDataURL(file);
+
+			}
+
+			$(".inner").height(window.innerHeight);
+			//点击相册按钮tools出现 
+			$(".photo").click(function() {
+				GetPhotos();
+			})
+		</script>
+
+		<!--照片功能结束-->
+		<!--添加侧栏事件 -->
+		<script src="js/AddEvent_Zone.js" type="text/javascript" charset="utf-8"></script>
+		<!--获取用户信息！-->
+		<script src="js/Load_firstdo.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			if(username != visiter) {
+				$(".tools").hide();
+			}
+		</script>
+	</body>
+
+</html>

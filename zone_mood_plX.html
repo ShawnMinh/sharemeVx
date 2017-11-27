@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Shareme- zone</title>
+		<link rel="stylesheet" type="text/css" href="css/zone.css" />
+		<link rel="stylesheet" type="text/css" href="css/zone_mood_plX.css" />
+				<link class="zonestylephone" rel="stylesheet" type="text/css" href="#" />
+
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="inner">
+			<div class="userinf">
+				<p class="tips"></p>
+				<div class="userinf-inner">
+					<img class="user_photo" src="img/home/u=2789957751,1711926808&fm=27&gp=0.jpg" />
+					<p>博主:<span class="user_name">chirs</span></p>
+					<p>年龄:<span class="user_age">12</span></p>
+					<p>星座:<span class="user_constellation">双鱼座</span></p>
+					<p>地区:<span class="user_city">西安</span></p>
+					<p>签名:<span class="user_autograph">世界和平</span></p>
+				</div>
+				<div class="contact">
+					<p>contact:<span class="tel">  +862362173213</span></p>
+				</div>
+				<div class="leave">
+					<div class="m1">
+						<a href="index.html" class="gotoindex">
+							<-回到首页</a>
+					</div>
+					<div class="m2">
+						Back->
+					</div>
+				</div>
+			</div>
+			<div class="userworks">
+				<div class="worksXXX">
+					<div class="worksnav">
+						<div class="photo">相册</div>
+						<div class="saysay">心情</div>
+						<div class="Game">Game</div>
+						<div class="leaveword">留言板</div>
+						<div class="sharelink">贴链接</div>
+						<div class="#">功能开发中</div>
+					</div>
+					<div class="tools">
+						<!--这里是工具-->
+					</div>
+					<div class="set">
+						<div class="set-inner">
+							设置
+						</div>
+					</div>
+				</div>
+				<div class="works">
+					<div class="moods-content">
+						<div class="moods-main" username="none" datatime="none">
+							sdadasd
+						</div>
+						<div class="moods-pl-fb">
+							<input type="text" class="pl_content" placeholder="嚷一下吧" />
+							<input type="button" class="pl_btn" value="嚷！" />
+						</div>
+						<div class="moods-pl">
+							<p userpl="管理员1号">空空如也</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//添加点击事件 
+			$(".photo").click(function() {
+				location.href = "zone_photos.html";
+			})
+			$(".diary").click(function() {
+				location.href = "#";
+			})
+			$(".saysay").click(function() {
+				location.href = "zone_mood.html";
+			})
+			$(".Game").click(function() {
+				location.href = "#";
+			})
+			$(".leaveword").click(function() {
+				location.href = "#";
+			})
+		</script>
+		<!--获取评论信息-->
+		<script type="text/javascript">
+			$(function() {
+				//页面刷新时加载
+				ShowComment();
+
+			})
+			$(".pl_btn").click(function() {
+				this.html="正在嚷........";
+				var commentX = $(".pl_content").val();
+				if(commentX.length < 1) {
+					alert("字数不要太少");
+					this.html="嚷 ";
+					return;
+				}
+				//alert("留言成功 ！");
+				$.ajax({
+					type: "POST",
+					url: "php/Zonemoods_update.php",
+					data: {
+						'username': username,
+						'status': 'pl',
+						'moodID': hash,
+						'comment': commentX,
+						'comment_username': visiter
+					},
+					success: function(data) {
+						var data = JSON.parse(data);
+								this.html="嚷 ";		
+						ShowComment();
+					}
+				});
+
+
+			})
+
+			function ShowComment() {
+				$.ajax({
+					type: "post",
+					url: "php/Zonemoods_Get.php",
+					data: {
+						'username': username
+					},
+					success: function(data) {
+						var data = JSON.parse(data);
+						console.log(data)
+						for(var i = data.counter - 1; i >= 0; i--) {
+							//如果评论为0  返回  
+							$(".moods-main").attr("username", data[i].username);
+							$(".moods-main").attr("datatime", data[i].moodtime);
+							console.log(data[i].moodID);
+							if(data[i].moodID == hash) {
+								//获取到指定数据
+								$(".moods-main").html(data[i].mood);
+								if(data[i].comment.length == 0) {
+									return 0;
+								}
+
+								var html = "";
+								for(var j = data[i].comment.length - 1; j >= 0; j -= 2) {
+									var pl = data[i].comment[j - 1];
+									html += `<p userpl="${data[i].comment[j]}">${pl}</p>`;
+								}
+								$(".moods-pl").html(html);
+							}
+						}
+					}
+				});
+			}
+		</script>
+		<!--添加侧栏事件 -->
+		<script src="js/AddEvent_Zone.js" type="text/javascript" charset="utf-8"></script>
+		<!--页面加载后要做的  获取用户信息！-->
+		<script type="text/javascript">
+			//全局变量
+			var username = localStorage.getItem("username");
+			var token = localStorage.getItem("token");
+			//var visiter = localStorage.getItem("visiter");
+			var visiter = "shawnminh";
+			var hash = location.hash;
+			if(hash == "") {
+				hash = "#506514932";
+			}
+			//var hash = "#506514932";
+			hash = hash.split("#")[1];
+			console.log(hash);
+			//此处应该做出判断  hash错误跳转 防止恶意
+			$(function() {
+				$(".inner").height(window.innerHeight);
+				//没登陆就跳转到首页
+				if(!username) {
+					location.href = "index.html";
+				}
+				if(username != "shawnminh") {
+					$(".tips").html("欢迎您来参观！");
+				} else {
+					$(".tips").html("主人回来啦！");
+				}
+				if(username != null && token != null) {
+					$.ajax({
+						type: "get",
+						url: "php/UserInfo_Get.php",
+						data: {
+							'username': username,
+							'token': token
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+							//console.log(data);
+							if(data.code) {
+								//console.log(data.photo)
+								$(".user_photo").prop("src", data.photo);
+								$(".user_name").html(data.username);
+								$(".user_age").html(data.age);
+								$(".user_autograph").html(data.autograph);
+								$(".user_constellation").html(data.constellation);
+								$(".user_city").html(data.city);
+								$(".tel").html(data.tel);
+							} else {
+								alert("系统错误");
+							}
+
+						}
+
+					});
+				}
+
+			})
+		</script>
+
+	</body>
+
+</html>

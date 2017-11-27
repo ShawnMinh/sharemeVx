@@ -1,0 +1,145 @@
+
+
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	overflow: hidden;
+}
+
+embed {
+	position: absolute;
+	z-index: -100;
+}
+.inner {
+	width: 100%;
+	height: auto;
+	position: relative;
+}
+
+.inner .userinf {
+	float: left;
+	width: 20%;
+	height: 100%;
+	background-color: #534846;
+	position: relative;
+	color: #FFFFFF;
+}
+
+.inner .userinf .userinf-inner {
+	width: 100%;
+	height: 50%;
+	margin-top: 30%;
+}
+
+.inner .userinf .userinf-inner img {
+	display: block;
+	width: 60%;
+	height: 180px;
+	margin: 20px auto;
+}
+
+.inner .userinf p {
+	width: 100%;
+	height: 5%;
+	line-height: 20px;
+	text-align: center;
+}
+
+.inner .userinf .contact {
+	margin-top: 70px;
+	text-align: center;
+}
+
+.inner .userinf .leave {
+	width: 100%;
+	height: 50px;
+	background-color: #000000;
+	color: #FFFFFF;
+	position: absolute;
+	bottom: 0px;
+}
+
+.inner .userinf .leave a {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.inner .userinf .leave div {
+	width: 49%;
+	height: 100%;
+	background-color: #DC143C;
+	float: left;
+	text-align: center;
+	line-height: 50px;
+	cursor: pointer;
+}
+
+.inner .userinf .leave .m2 {
+	float: right;
+}
+
+.inner .userworks {
+	width: 80%;
+	height: 100%;
+	float: left;
+	position: relative;
+}
+
+.inner .userworks .worksXXX {
+	width: 10%;
+	height: 100%;
+	float: right;
+	background-color: #000000;
+	position: relative;
+}
+
+.inner .userworks .worksXXX div {
+	text-align: center;
+	line-height: 50px;
+	cursor: pointer;
+	transition: all 1s;
+}
+
+.inner .userworks .worksXXX .worksnav {
+	width: 100%;
+}
+
+.inner .userworks .worksXXX .worksnav div {
+	width: 100%;
+	background-color: #FAEBD7;
+}
+
+.inner .userworks .worksXXX .worksnav div:hover {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+.inner .userworks .worksXXX .tools{
+	height: auto;
+	width: 100%;
+	color: #F0F8FF;
+}
+
+.inner .userworks .worksXXX .set {
+	width: 100%;
+	height: 50px;
+	background-color: #DC143C;
+	bottom: 0px;
+	color: #F0F8FF;
+	position: absolute;
+}
+
+.inner .userworks .worksXXX .set .set-inner {}
+
+.inner .userworks .works {
+	width: 90%;
+	height:100%;
+	position: relative;
+	overflow: hidden;
+}
+
+
+
+
+

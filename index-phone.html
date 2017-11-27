@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="HandheldFriendly" content="true">
+
+		<title>ShareMe</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/indexheader-Phone.css" />
+		<script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+		<script src="js/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<!--top-->
+		<div class="header-inner-ke">
+			<div class="header-logo">
+				<a href="index.html" class="loo">
+					<span class="logo">ShareMe</span>
+					<span class="logo logo2">分享美好</span>
+				</a>
+				<div class="ssla">
+					三
+				</div>
+			</div>
+			<div class="header-inner">
+				<div class="nav">
+					<li>
+						<a class="gotozone">个人空间</a>
+					</li>
+					<li>
+						<a href="#" class="cho">心情</a>
+					</li>
+					<li>
+						<a href="#" class="gaobai">想对你说</a>
+					</li>
+					<li>
+						<a href="#" class="firends">朋友们</a>
+					</li>
+				</div>
+				<div class="log-res">
+					<a href="logandreg.html#1">登录</a>
+					<a href="logandreg.html#0">注册</a>
+				</div>
+			</div>
+			<!--登录注册退出按钮相关！！！-->
+			<script type="text/javascript">
+				var too = localStorage.getItem("token");
+				var html = "<span class='usertitle'>博主:</span><span class='username'>none</span><div class='tog'><img src='img/home/7-140223103130591.png'/><div class='cancel'><span>退出登录</span></div></div>";
+				if(too) {
+					$(".log-res").html(html);
+				}
+				$(".cancel").click(function() {
+					localStorage.clear()
+					location.href = "index.html";
+				})
+			</script>
+		</div>
+		<!--文章轮波-->
+		<header>
+			<div class="Exh">
+				<div class="artshow">
+					<p class="art">
+						如何让你遇见我 在我最美丽的时刻 为这 我已在佛前 求了五百年 求他让我们结一段尘缘 佛于是把我化作一棵树 长在你必经的路旁 阳光下慎重地开满了花 朵朵都是我前世的盼望 当你走近 请你细听 那颤抖的叶是我等待的热情 而当你终于无视地走过 在你身后落了一地的 朋友啊 那不是花瓣 是我凋零的心
+					</p>
+				</div>
+				<div class="UserShow">
+					<p class="usernameShow">---席慕容</p>
+				</div>
+			</div>
+		</header>
+		<script type="text/javascript">
+			$(function() {
+				$.get("arti.json",
+					function(data) {
+						var data = data;
+						var i = 1;
+						var timer = null;
+						timer = setInterval(function() {
+							$(".Exh").fadeOut(1000)
+							setTimeout(function() {
+								console.log(data[i])
+								$(".art").html(data[i]);
+								$(".usernameShow").html("---海子")
+								i++;
+								if(i >= 5) {
+									i = 1;
+								}
+								$(".Exh").fadeIn(1000)
+							}, 1000)
+						}, 10000);
+
+					})
+				$(".ssla").click(function() {
+					this.index = !this.index;
+					console.log(this.index);
+					if(this.index) {
+						$(".header-inner").css("display", "block");
+					} else {
+						$(".header-inner").css("display", "none");
+					}
+				})
+				$(".down").click(function() {
+					$("html,body").animate({
+						"scrollTop": 660
+					}, 1000)
+				})
+				var tt = 1;
+				setInterval(function() {
+					tt++;
+					if(tt >= 9) {
+						tt = 1;
+					}
+					$("header").css("background-image", "url(img/home/p" + tt + ".jpg)")
+				}, 10000);
+				$(".gaobai").click(function() {
+					$("html,body").animate({
+						"scrollTop": 300
+					}, 1000)
+				})
+				//告白墙
+				$(".cho").click(function() {
+					$("html,body").animate({
+						"scrollTop": 800
+					}, 1000)
+				})
+				$(".firends").click(function() {
+					$("html,body").animate({
+						"scrollTop": 1350
+					}, 1000)
+				})
+				$(".gotozone").click(function() {
+					if(!username) {
+						alert("请先登录 !")
+					}
+				})
+
+			})
+		</script>
+		<!--空间精选-->
+		<section>
+			<!--导入svg-->
+			<embed src="bj.svg" width="1360" height="700" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+			<div class="usersee">
+				<p class="ab">想对你说
+					<span>for you</span>
+				</p>
+				<div class="saytoyoucontent">
+
+				</div>
+				<div class="iwantsay">
+					<span class="say">
+						我想对
+					</span>
+					<input type="text" name="" class="saytowho" placeholder="想对谁说:作者" value="" />
+					<span class="say">
+						说 :
+					</span>
+					<input type="text" name="" class="saywhat" placeholder="说点什么吧" />
+					<input type="button" name="" class="btn_sayit" value="说出来>>" />
+				</div>
+			</div>
+			<!--		//想对你说-->
+			<script type="text/javascript">
+				$(function() {
+					var myDate = new Date();
+					$(".btn_sayit").click(function() {
+
+						if(!username) {
+							alert("请先登录");
+							return;
+						}
+
+						//如果输入是空就提示 
+						if(!$(".saywhat").val() || !$(".saytowho").val()) {
+							$("input").css("transform", "scale(1.1)");
+							setInterval(function() {
+								$("input").css("transform", "scale(1)");
+							}, 100)
+							return;
+						}
+
+						$.ajax({
+							type: "get",
+							url: "php/CommentMessageinsert.php",
+							data: {
+								'saytowho': $(".saytowho").val(),
+								'message': $(".saywhat").val(),
+								'time': myDate.toLocaleDateString()
+							},
+							success: function(data) {
+								GetCMs();
+							}
+						});
+					})
+
+									//获取留言板信息
+					GetCMs();
+					function GetCMs(){
+						$.ajax({
+						type: "get",
+						url: "php/CommentMessage.php",
+						success: function(data) {
+							var data = JSON.parse(data);
+							var html = "";
+							for(var i = 0; i < data.mes.length; i++) {
+								html += "<p><span>有人偷偷对</span><span class='thisname'>"+data.who[i]+"</span><span>说</span><span>"+data.mes[i]+"</span></p>";
+							}
+							$(".saytoyoucontent").html(html);
+							//慢慢滑下去
+							saytoyoucontentdown(data.mes.length);
+						}
+					});
+					}
+					
+					//慢慢滑下去
+					function saytoyoucontentdown(l) {
+						l = l || 100;
+						$(".saytoyoucontent").animate({
+							"scrollTop": l * 40
+						}, l * 500);
+					}
+				})
+			</script>
+			<div class="content1"></div>
+			<embed src="bj2.svg" width="1360" height="700" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+			<div class="usersee">
+				<p class="ab">随便看看
+					<span>user</span>
+				</p>
+				<p class="abcon">看看他们的心情</p>
+				<div class="showra">
+					<p class="p1">
+					</p>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$.ajax({
+						type: "get",
+						url: "php/GetAllMoods.php",
+						success: function(data) {
+							var data = JSON.parse(data);
+							console.log(data);
+							if(data.code == 0) {
+								data = data.data;
+								var html = "";
+								for(var i = 0; i < data.length; i++) {
+									html += "<span>" + data[i].mood + "</span>";
+								}
+								$(".p1").html(html);
+							}
+						}
+					});
+				})
+			</script>
+			<div class="content2"></div>
+			<embed src="bj3.svg" width="100%" height="400" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+			<div class="usersee we">
+				<p class="ab">推荐用户
+					<span>ours</span>
+				</p>
+				<p class="abcon">全都在这里</p>
+				<div class="showwe">
+					<div class="showwe-inner">
+					</div>
+				</div>
+				<div class="lr">
+					左右滑动选择
+				</div>
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$.ajax({
+						type: "get",
+						url: "php/GetAllUser.php",
+						success: function(data) {
+							var data = JSON.parse(data);
+							console.log(data);
+							if(data.code == 1) {
+								data = data.data;
+								var html = "";
+								$(".showwe-inner").width(data.length * 300)
+								for(var i = 0; i < data.length; i++) {
+									html += "<li class='useruser' data-content='" + data[i].username + "'><img src='" + data[i].photo + "' /><p>" + data[i].username + "</p></li>"
+								}
+								$(".showwe-inner").html(html);
+							}
+							//$(".rrr").get(0).index=$(".showwe-inner").width();
+							showuser();
+							gundong(data.length);
+						}
+					});
+				})
+			</script>
+			<script type="text/javascript">
+				function gundong(len) {
+					
+					var m = $(".showwe-inner").css("left").split("px")[0];
+					
+					$(".lll").click(function() {
+						if(m >= 0) {
+							return;
+						}
+						m = m + 200;
+						$(".showwe-inner").stop();
+						$(".showwe-inner").animate({
+							"left": m
+						}, 1000);
+					})
+					$(".rrr").click(function() {
+						console.log("xxx");
+						if(m < -(this.index-600)) {
+							return;
+						}
+						m = m - 200;
+						
+						//$(".showwe-inner").css("left", m);
+						$(".showwe-inner").stop();
+						$(".showwe-inner").animate({
+							"left": m
+						}, 1000);
+					})
+
+				}
+
+				function showuser() {
+					$(".useruser").on("click", function() {
+						localStorage.setItem("username", $(this).attr("data-content"));
+						location.href = "zone.html"
+					})
+				}
+			</script>
+
+			<div class="content3"> </div>
+			<div class="ad">
+				<p>Advertisement For Rent.</p>
+				<p>Version 2.1.9： For detailes.Please enter ShawnMinh Space</p>
+				<p>Please contact me If you have any suggestions or issues</p>
+			</div>
+		</section>
+
+		<footer>
+			<div class="goodman">
+				<p>友情链接</p>
+				<p class="linkssss">
+					<a href="http://www.baidu.com">baidu</a>
+					<a href="http://www.baidu.com">baidu</a>
+					<a href="http://www.baidu.com">baidu</a>
+					<a href="search.html" class="search">新功能!张明搜索!!</a>
+					<a href="xxxxxxxxxxxxx.html" class="search">新功能!察看朋友们!!</a>
+				</p>
+			</div>
+
+			<div class="contact">
+				<div class="callme">
+					<a href="https://wx.qq.com/">
+						<span class="cp1"></span>
+					</a>
+					<a href="https://weibo.com/">
+						<span class="cp2"></span>
+					</a>
+					<a href="https://www.facebook.com/">
+						<span class="cp3"></span>
+					</a>
+					<span class="cp0">
+				联系作者:thisisming@qq.com
+			</span>
+				</div>
+			</div>
+		</footer>
+
+		<!--回到顶部-->
+		<div class="gototop">
+			<div class="topl"></div>
+			<div class="topr"></div>
+		</div>
+		<script type="text/javascript">
+			$(".gototop").click(function() {
+				$("html,body").animate({
+					"scrollTop": 0
+				}, 1000)
+			})
+			$(window).mousemove(function() {
+				if($(document).scrollTop() <= 300) {
+					$(".gototop").hide();
+				} else {
+					$(".gototop").show();
+				}
+
+			})
+		</script>
+
+		<!--	//获取用户信息
+		//页面加载完成首先做的-->
+		<script type="text/javascript">
+			//设置全局变量
+			var username = localStorage.getItem("visiter");
+			var token = localStorage.getItem("token");
+			$(function() {
+				//svg宽度
+				$("embed").attr("width", $(window).width());
+				//检测屏幕设置手机端网页
+				if(window.screen.width > 700) {
+					location.href = "index.html"
+				}
+				//没登陆无法点击的 
+				if(!username) {
+					$(".gotozone").prop("href", "#PleaseLogin");
+				} else {
+					localStorage.setItem("username", username);
+					$(".gotozone").prop("href", "zone.html");
+				}
+				$.ajax({
+					type: "get",
+					url: "php/UserInfo_Get.php",
+					data: {
+						"username": username,
+						"token": token
+					},
+					success: function(data) {
+						var data = JSON.parse(data);
+						
+						switch (parseInt(data.power))
+						{
+							case 1: $(".usertitle").html("管理员:");break;
+							case 2: $(".usertitle").html("张明的女朋友:");break;
+							case 3: $(".usertitle").html("大便:");break;
+							case 4: $(".usertitle").html("黄金会员:");break;
+							case 5: $(".usertitle").html("钻石会员:");break;
+							case 6: $(".usertitle").html("海贼王:");break;
+							case 7: $(".usertitle").html("垃圾:");break;
+							default: $(".usertitle").html("猫:");
+						}
+						$(".username").html(data.username);
+						if(data.photo) {
+							$(".tog img").prop("src", data.photo);
+						}
+					}
+				});
+			})
+		</script>
+
+	</body>
+
+</html>

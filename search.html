@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>张明专用搜索器</title>
+<style type="text/css">
+	*{ margin:0; padding:0; border:none;}
+	#text{width:40%; height:50px; background-color:#FCC; float:left;}
+	#seart{	width:40%; height:50px; background-color:#6F0; float:left;}
+	.soso{ widows:100%; float:none;}
+	.soso #ifa{width:100%; height:500px;}
+	option{  font-size:30px;}
+	.zz{ width:100%; height:110px; background-color:#000; font-family:"微软雅黑", "黑体", "宋体"; font-size:40px; line-height:110px; text-align:center; color:#FFF;}
+</style>
+</head>
+
+<body>
+	<div>
+		<input type="text" id="text" placeholder="请输入搜索内容" />
+        <select id="xuanxiang" style=" height:50px; width:20%; background-color:#FF0">
+        	<option id="baidu" value="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=">百度</option>
+        	<option id="by" value="http://cn.bing.com/search?q=">必应</option>
+            <option id="sougou" value="https://www.sogou.com/web?query=">搜狗</option>
+            <option id="by" value="https://www.so.com/s?ie=utf-8&shb=1&src=360sou_newhome&q=">360</option>
+        	<option id="by" value="http://www.magwu.com/s?q=">磁力链接</option
+        ></select>
+		<input type="submit" id="seart"  value="马上张明一下！" style=" font-size:50px;" onClick="sousuo();tu()"/>
+		<div class="soso">
+        	<iframe id="ifa"  frameborder="0" scrolling="auto"  src="http://c.hiphotos.baidu.com/zhidao/pic/item/08f790529822720e7ef31ca179cb0a46f21faba8.jpg" ></iframe>
+        </div>
+        <div class="zz">学习姿势?马上张明一下！</div>
+
+<script type="text/javascript" language="javascript">
+	 var url;
+	 var xuanxiang=document.getElementById("xuanxiang");
+	function sousuo()
+	{
+		var a=document.getElementById("text");
+		url =xuanxiang.value+encodeURI(a.value);
+	}
+	
+
+	function tu()
+	{
+		mn=document.getElementById("ifa");
+		mn.src=url;
+	}
+	
+</script>
+</div>
+</body>
+</html>

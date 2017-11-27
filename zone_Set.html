@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Shareme- zone</title>
+		<link rel="stylesheet" type="text/css" href="css/zone.css" />
+		<link rel="stylesheet" type="text/css" href="css/zone_Set.css" />
+		<link class="zonestylephone" rel="stylesheet" type="text/css" href="#" />
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="inner">
+			<div class="userinf">
+				<p class="tips"></p>
+				<div class="userinf-inner">
+					<img class="user_photo" src="img/home/u=2789957751,1711926808&fm=27&gp=0.jpg" />
+					<p>博主:<span class="user_name">none</span></p>
+					<p>年龄:<span class="user_age">none</span></p>
+					<p>星座:<span class="user_constellation">none</span></p>
+					<p>地区:<span class="user_city">none</span></p>
+					<p>签名:<span class="user_autograph">世界和平</span></p>
+				</div>
+				<div class="contact">
+					<p>contact:<span class="tel">none</span></p>
+				</div>
+				<div class="leave">
+					<div class="m1">
+						<a href="index.html" class="gotoindex">
+							<-回到首页</a>
+					</div>
+					<div class="m2">
+						Back->
+					</div>
+				</div>
+			</div>
+			<div class="userworks">
+				<div class="worksXXX">
+					<div class="worksnav">
+						<div class="photo">相册</div>
+						<div class="saysay">心情</div>
+						<div class="Game">Game</div>
+						<div class="leaveword">留言板</div>
+						<div class="sharelink">贴链接</div>
+						<div class="#">功能开发中</div>
+					</div>
+					<div class="tools">
+						<!--这里是工具-->
+					</div>
+					<div class="set">
+						<div class="set-inner">
+							设置
+						</div>
+					</div>
+				</div>
+				<div class="works">
+					<div class="setuserinf">
+						用户信息设置
+						<div class="setinformation">
+							<p class="setphoto">
+								设置头像
+								<img class="pic" src="" alt="" />
+								<input type="file" accept="image/*" class="readfile" onchange="imggo(this.files)" />
+							</p>
+							<p>年龄: <input type="text" class="age" value="" /></p>
+							<p>城市: <input type="text" class="city" value="" /></p>
+							<p>星座: <input type="text" class="constellation" value="" /></p>
+							<p>签名: <input type="text" class="autograph" value="" /></p>
+							<p>联系方式: <input type="text" class="tele" value="" /></p>
+							<input type="button" class="newinfor" value="立即更新我的信息" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			//把用户上传的照片转换成 dataurl形式
+			imgurl = "";
+
+			function imggo(files) {
+				var file = files[0];
+				var reader = new FileReader();
+				reader.onload = function() {
+					//console.log(this.result);
+					imgurl = this.result;
+					//str = str.substring(str.indexOf(',') + 1);
+					str = imgurl.substring(imgurl.indexOf(',') + 1);
+					$(".pic").attr("src", imgurl);
+					//缩略图
+				}
+				reader.readAsDataURL(file);
+
+			}
+
+			updateuserinfor();
+
+			//<!--用户信息修改-->
+			function updateuserinfor() {
+				//开始更新信息  点击
+				$(".newinfor").click(function() {
+					console.log("xx")
+					var age = $(".age").val();
+					var city = $(".city").val();
+					var constellation = $(".constellation").val();
+					var autograph = $(".autograph").val();
+					var tele = $(".tele").val();
+					//改为 是自己才可以改
+					if(username != null && token != null) {
+						$.ajax({
+							type: "post",
+							url: "php/UserInfo_Set.php",
+							data: {
+								'token': token,
+								'username': username,
+								'age': age,
+								'city': city,
+								'constellation': constellation,
+								'autograph': autograph,
+								'tele': tele,
+								'photourl': imgurl
+							},
+							success: function(data) {
+								var data = JSON.parse(data);
+								console.log(data);
+								if(data.code == 1) {
+									location.href = "zone.html";
+								} else {
+									alert("口令不匹配! 请重新登录")
+									console.log(data.message)
+								}
+							}
+						});
+					}
+
+				})
+			}
+		</script>
+
+		<!--添加侧栏事件 -->
+		<script src="js/AddEvent_Zone.js" type="text/javascript" charset="utf-8"></script>
+		<!--页面加载后要做的  获取用户信息！-->
+		<script src="js/Load_firstdo.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			console.log(username, visiter)
+			if(username != visiter) {
+				location.href = "zone.html"
+			}
+		</script>
+	</body>
+
+</html>

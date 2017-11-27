@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/animate.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{ margin: 0 ; padding: 0; border: none;}
+			#box1{
+				width: 50px;height: 50px;
+				background-image: url(img/tanks.fw.png);
+				position: absolute;}
+			#bj{
+				width: 1000px;height: 400px;
+				border: 1px solid #8A2BE2;
+				background-color: #F0FFFF;
+				position: relative;margin: 100px auto;overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="bj">	
+			<div id="box1"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var box1=document.getElementById("box1");
+		var bj=document.getElementById("bj");
+		var step=10;
+		var Tx=0;
+		document.onkeydown=function(e)
+			{
+				//alert(e.keyCode);   // 87 83  65 68 
+				switch(e.keyCode)
+				{
+					case 87: up();break;
+					case 83: down();break;
+					case 65: left();break;
+					case 68: right();break;
+					default:alert("keycode errors");
+				}
+				judge();
+				e=e||window.event;
+
+			}
+			
+			document.onclick=function()
+			{
+				fire();
+			}
+			
+			function fire()
+			{
+				 switch(Tx)
+				 {
+				 	case 0: ss();break;
+				 	case 1: xx() ;break;
+				 	case 2: zz();break;
+				 	case 3: yy();break;				 	
+				 }
+			}
+			
+			function ss()
+			{
+				addBullet(box1.offsetLeft,box1.offsetTop-50,box1.offsetLeft,-1000);
+			}
+			function xx()
+			{
+				addBullet(box1.offsetLeft,box1.offsetTop+50,box1.offsetLeft,1000);
+			}
+			function zz()
+			{
+				addBullet(box1.offsetLeft-50,box1.offsetTop,-1000,box1.offsetTop);
+			}
+			function yy()
+			{
+				addBullet(box1.offsetLeft+50,box1.offsetTop,1000,box1.offsetTop);
+			}
+			function addBullet(x,y,m,n)
+			{
+				var odiv=document.createElement("div");
+				odiv.style.cssText="font-size: 20px; font-weight: bold; width: 50px; height: 100px;background-color:#fff; position:absolute;";
+				odiv.style.left=x+"px";
+				odiv.style.top=y+"px";
+				odiv.innerText="炮弹!!";
+				 switch(Tx)
+				 {
+				 	case 2: odiv.style.width= "100px"; odiv.style.height="50px";break;
+				 	case 3: odiv.style.width= "100px"; odiv.style.height="50px";break;				 	
+				 }
+				bj.appendChild(odiv);
+				animate(odiv,{"left":m,"top":n},1000);
+			}
+			function up()
+			{
+				Tx=0;
+				box1.style.transform="rotate(180deg)";
+				box1.style.top=box1.offsetTop-step+"px";
+			}
+			function down()
+			{
+				Tx=1;
+				box1.style.transform="rotate(0deg)";
+				box1.style.top=box1.offsetTop+step+"px";
+			}	
+			function left()
+			{
+				Tx=2;
+				box1.style.transform="rotate(90deg)";
+				box1.style.left=box1.offsetLeft-step+"px";
+			}	
+			function right()
+			{
+				Tx=3;
+				box1.style.transform="rotate(-90deg)";
+				box1.style.left=box1.offsetLeft+step+"px";
+			}
+			
+			function judge()
+			{
+					if (box1.offsetLeft<0)
+					{
+						box1.style.left="0px";
+					}
+					if (box1.offsetLeft>950) {
+						box1.style.left="950px";
+					}
+					if (box1.offsetTop<0)
+					{
+						box1.style.top="0px";
+					}
+					if (box1.offsetTop>350)
+					{
+						box1.style.top="350px";
+					}
+			}
+	</script>
+</html>

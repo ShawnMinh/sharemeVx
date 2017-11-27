@@ -1,0 +1,54 @@
+/*个人信息设置*/
+
+.setuserinf {
+	width: 100%;
+	height: 70%;
+	font-size: 3em;
+	position: relative;
+}
+
+.setuserinf .setinformation {
+	font-size: 16px;
+	margin-top: 20px;
+	width: 100%;
+	position: relative;
+}
+
+.setuserinf .setinformation p {
+	width: 85%;
+	height: 50px;
+	margin: 0 auto;
+}
+
+.setuserinf .setinformation .setphoto {
+	height: 120px;
+	width: 20%;
+	margin-bottom: 20px;
+	position: absolute;
+	right: 10%;
+}
+
+.setuserinf .setinformation img {
+	display: block;
+	width: 100px;
+	height: 100px;
+	background-color: #DC143C;
+	float: left;
+}
+
+.setuserinf .setinformation input {}
+
+.setuserinf .setinformation .newinfor {
+	width: 100%;
+	height: 100px;
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid #DC143C;
+	cursor: pointer;
+	transition: all 1s;
+}
+
+.setuserinf .setinformation .newinfor:hover {
+	background-color: #534846;
+	color: #F0F8FF;
+}

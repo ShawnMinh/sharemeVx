@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Shareme- zone</title>
+		<link rel="stylesheet" type="text/css" href="css/zone.css" />
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.thisgame{
+				display: block;
+				width:100%;
+				height: 50px;
+				text-align: center;
+				cursor:pointer;
+				color: #F0FFFF;
+				background-color: #000000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<embed src="bj0001.svg" width="1360" height="1200" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+		<div class="inner">
+			<div class="userinf">
+				<p class="tips"></p>
+				<div class="userinf-inner">
+					<img class="user_photo" src="img/home/u=2789957751,1711926808&fm=27&gp=0.jpg" />
+					<p>博主:<span class="user_name">测试用小王八</span></p>
+					<p>年龄:<span class="user_age">999</span></p>
+					<p>星座:<span class="user_constellation">双鱼座</span></p>
+					<p>地区:<span class="user_city">西安</span></p>
+					<p>签名:<span class="user_autograph">世界和平</span></p>
+				</div>
+				<div class="contact">
+					<p>contact:<span class="tel">  +862362173213</span></p>
+				</div>
+				<div class="leave">
+					<div class="m1">
+						<a href="index.html" class="gotoindex">
+							<-回到首页</a>
+					</div>
+					<div class="m2">
+						功能暂定
+					</div>
+				</div>
+			</div>
+			<div class="userworks">
+				<div class="worksXXX">
+					<div class="worksnav">
+						<div class="photo">相册</div>
+						<div class="diary">xxx</div>
+						<div class="saysay">心情</div>
+						<div class="Game">Game</div>
+						<div class="leaveword">留言板</div>
+						<div class="whoseeme">谁看过我</div>
+					</div>
+					<div class="tools">
+						<!--这里是工具-->
+					</div>
+					<div class="set">
+						<div class="set-inner">
+							设置
+						</div>
+					</div>
+				</div>
+				<div class="works">
+						<a href="games/Cre.html" class="thisgame">我也不知道这是啥</a>
+						<a href="games/Drawlines.html" class="thisgame">胡乱画线</a>
+						<a href="games/print.html" class="thisgame">画画的</a>
+						<a href="games/RussiaBox.html" class="thisgame">俄罗斯方块</a>
+						<a href="games/snake.html" class="thisgame">贪吃蛇</a>
+						<a href="games/TANKS.html" class="thisgame">坦克小战</a>
+						<a href="games/yaojiang.html" class="thisgame">摇奖机</a>
+				</div>
+			</div>
+		</div>
+		<!--添加侧栏事件 -->
+		<script src="js/AddEvent_Zone.js" type="text/javascript" charset="utf-8"></script>
+		<!--页面加载后要做的  获取用户信息！-->
+		<script type="text/javascript">
+			var username = "xiaowangba";
+			var token = localStorage.getItem("token");
+			$(function() {
+				$(".inner").height(window.innerHeight);
+				//没登陆就跳转到首页
+				if (!username) {
+					location.href="index.html";
+				}
+				if(username != "shawnminh") {
+					$(".tips").html("欢迎您来参观！");
+				} else {
+					$(".tips").html("主人回来啦！");
+				}
+				if(username != null && token != null) {
+					$.ajax({
+						type: "get",
+						url: "php/UserInfo_Get.php",
+						data: {
+							username: username,
+							token: token,
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+							console.log(data);
+							if(data.code) {
+								console.log(data.photo)
+								$(".user_photo").prop("src", data.photo);
+								$(".user_name").html(data.username);
+								$(".user_age").html(data.age);
+								$(".user_autograph").html(data.autograph);
+								$(".user_constellation").html(data.constellation);
+								$(".user_city").html(data.city);
+								$(".tel").html(data.tel);
+							} else {
+								alert("系统错误");
+							}
+
+						}
+
+					});
+				}
+
+			})
+		</script>		
+	</body>
+
+</html>

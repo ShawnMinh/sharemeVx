@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<style type="text/css">
+			*{margin: 0;padding: 0;border: none;}
+			#box{
+				width: 10px;height: 10px;
+				position: absolute;
+				background-color: #DC143C;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<canvas id="can" ></canvas>
+	</body>
+	<script type="text/javascript">
+		var path=[
+		{left:300,top:150},    
+		{left:500,top:150},		
+		{left:300,top:200},		
+		{left:100,top:200},		
+		{left:300,top:150},		
+		
+		{left:300,top:450},
+		{left:500,top:450},
+		{left:300,top:500},
+		{left:100,top:500},
+		{left:300,top:450},
+		{left:100,top:500}, //拐上
+		{left:100,top:200},
+		{left:300,top:200},
+		{left:300,top:500},//拐下 
+		{left:500,top:450},
+		{left:500,top:150},
+		];
+		$("canvas")[0].width=window.innerWidth;
+		$("canvas")[0].height=window.innerHeight;
+		var lines=$("canvas")[0].getContext("2d");
+		$("#box").css(path[0]);
+		draw();
+		function draw()
+		{
+
+			lines.strokeStyle="#FFA500";
+			lines.lineWidth=1;
+			lines.beginPath();
+			lines.moveTo(path[0].left,path[0].top);
+			for (var i = 0; i < path.length; i++)
+			{
+				lines.lineTo(path[i].left,path[i].top)
+			}
+			lines.stroke();
+			for (var i = 0; i < path.length; i++) {
+				$("#box").animate(path[i],100);
+			}
+		}
+		function clear()
+			{
+				$("canvas")[0].width=$("canvas")[0].width;
+				$("canvas")[0].height=$("canvas")[0].height;
+				lines.lineCap="round";
+				lines.lineWidth=defaultWide;
+				lines.strokeStyle=defaultColor;
+			}
+			var pos={
+				x:500,
+				y:500
+			}
+			
+			$(document).click(function(){
+				var px=event.clientX;
+				var py=event.clientY;
+				console.log(px,py);
+				path=[
+				{left:px,top:py},   	//x,y
+				{left:px+200,top:py},					//x+200,y
+				{left:px,top:py+50},		//x,y+50
+				{left:px-200,top:py+50},					//x-200,y+50
+				{left:px,top:py},		//x,y
+				
+				{left:px,top:py+300},
+				{left:px+200,top:py+300},
+				{left:px,top:py+350},
+				{left:px-200,top:py+350},
+				{left:px,top:py+300},
+				{left:px-200,top:py+350}, //拐上
+				{left:px-200,top:py+50},
+				{left:px,top:py+50},
+				{left:px,top:py+350},//拐下 
+				{left:px+200,top:py+300},
+				{left:px+200,top:py},
+				]
+			$(document).mousemove(function(){
+		//	clear();
+			console.log(event.clientX/10,event.clientY/10);
+			for (var i = 0; i < path.length; i++) {
+				if (event.clientX>pos.x) {
+				 	path[i].left+=event.clientX/100;
+				}
+				if (event.clientX<pos.x) {
+					path[i].left-=event.clientX/100;
+				}
+				if (event.clientY<pos.y) {
+					path[i].top-=event.clientY/100;
+				}
+				if (event.clientY>pos.y) {
+					path[i].top+=event.clientY/100;
+				}
+
+			}
+			draw();
+			pos.x=event.clientX;
+			pos.y=event.clientY;
+		})
+				
+			})
+			
+		
+		
+	</script>
+</html>

@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Shareme- zone</title>
+		<link rel="stylesheet" type="text/css" href="css/zone.css" />
+		<link rel="stylesheet" type="text/css" href="css/zone_mood.css" />
+		<link class="zonestylephone" rel="stylesheet" type="text/css" href="#" />
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="inner">
+			<div class="userinf">
+				<p class="tips"></p>
+				<div class="userinf-inner">
+					<img class="user_photo" src="img/home/u=2789957751,1711926808&fm=27&gp=0.jpg" />
+					<p>博主:<span class="user_name">chirs</span></p>
+					<p>年龄:<span class="user_age">12</span></p>
+					<p>星座:<span class="user_constellation">双鱼座</span></p>
+					<p>地区:<span class="user_city">西安</span></p>
+					<p>签名:<span class="user_autograph">世界和平</span></p>
+				</div>
+				<div class="contact">
+					<p>contact:<span class="tel">  +862362173213</span></p>
+				</div>
+				<div class="leave">
+					<div class="m1">
+						<a href="index.html" class="gotoindex">
+							<-回到首页</a>
+					</div>
+					<div class="m2">
+						Back->
+					</div>
+				</div>
+			</div>
+			<div class="userworks">
+				<div class="worksXXX">
+					<div class="worksnav">
+						<div class="photo">相册</div>
+						<div class="saysay">心情</div>
+						<div class="Game">Game</div>
+						<div class="leaveword">留言板</div>
+						<div class="sharelink">贴链接</div>
+						<div class="#">功能开发中</div>
+					</div>
+					<div class="tools">
+						<!--这里是工具-->
+					</div>
+					<div class="set">
+						<div class="set-inner">
+							设置
+						</div>
+					</div>
+				</div>
+				<div class="works">
+					<div class='moods-main'>
+						<div class="writemoods">
+							<div class="moods_bottom">
+								<textarea class="mood_content" placeholder="就在这里记录下每一天吧!" autofocus=""></textarea>
+								<input type="button" class="moos_go" value="记录我的心情" />
+							</div>
+						</div>
+						<div class="moods-inner">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			$(".moos_go").click(function() {
+				var moods = $(".mood_content").val();
+				var myDate = new Date();
+				var nowtime = myDate.toLocaleDateString() + "--" + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+				if(moods.length < 1) {
+					alert("至少也要一个字吧!");
+					return;
+				}
+				$(".moos_go").val("正在发表...");
+				$(".mood_content").val("").focus();
+				$.ajax({
+					type: "POST",
+					url: "php/Zonemoods_update.php",
+					data: {
+						'username': username,
+						'token': token,
+						'moods': moods,
+						'status': 'fb',
+						'time': nowtime
+					},
+					success: function(data) {
+						
+						var data = JSON.parse(data);
+						console.log(data);
+						getzonemoods();
+						$(".moos_go").val("记录我的心情");
+					}
+				});
+
+			})
+		</script>
+
+		<script type="text/javascript">
+			$(function() {
+				getzonemoods();
+			})
+
+			//获取心情信息
+			function getzonemoods() {
+				$.ajax({
+					type: "post",
+					url: "php/Zonemoods_Get.php",
+					data: {
+						'username': username
+					},
+					success: function(data) {
+						var data = JSON.parse(data);
+						var html = "";
+						if(!data.counter) {
+							html = "<span class='noting' style='font-size: 150px'>空空如也</span>";
+						}
+						for(var i = data.counter - 1; i >= 0; i--) {
+							if(!data[i]) {
+								continue;
+							}
+							html += "<li mood='"+data[i].moodID+"' alone='"+data[i].alone+"' cancomment='"+data[i].cancomment+"'><div class='moods_iin'><div class='func'><div class='moods_univer moods_commt'>评论("+data[i].comment.length/2+")</div><div class='moods_univer moods_loud' count='"+data[i].loud+"'>赞！("+data[i].loud+")</div><div class='moods_univer whengo'>"+data[i].username+"发表于<div class='moods-down'><div class='moodscz-inner' style='width:200%'>"+data[i].moodtime+"</div></div></div><div class='moods_univer zonemoodcz'>操作<div class='moods-down moods-down1'><div class='moodscz-inner moods_delete'>删除</div><div class='moodscz-inner moods_close'>关闭评论</div><div class='moodscz-inner moods_justme'>心情状态:公开</div></div></div></div><p>"+data[i].mood+"</p></div></li>";
+						}
+						$(".moods-inner").html(html);
+						console.log("yes");
+						AddSomeEvent();
+						handleMoods();
+						
+						if (username != visiter) {
+							$(".zonemoodcz").hide();
+							$(".writemoods").hide();
+						}
+						
+					
+					}
+				});
+			}
+
+			function handleMoods() {
+				//添加点赞事件
+				$(".moods_loud").click(function() {
+					p=-p;
+					if(p==-1) {
+						var count = $(this).attr("count");
+						count++;
+						$(this).attr("count", count);
+						$(this).html("赞！(" + count + ")");
+						//获取指定父亲
+						var moodID = $(this).parents("li").attr("mood");
+						$.ajax({
+							type: "post",
+							url: "php/Zonemoods_CZ.php",
+							data: {
+								'username': username,
+								'moodID': moodID,
+								'loud': count,
+								'status': 'lo'
+							},
+							success: function(data) {
+								var data = JSON.parse(data);
+								getzonemoods()
+							}
+						});
+					}else{
+						alert("不要疯狂点赞！");
+					}
+
+				})
+				//添加删除moods事件
+				$(".moods_delete").click(function() {
+					//获取指定父亲
+					var moodID = $(this).parents("li").attr("mood");
+					//console.log($(this).parents("li").attr("mood"));
+					$.ajax({
+						type: "post",
+						url: "php/Zonemoods_CZ.php",
+						data: {
+							'username': username,
+							'moodID': moodID,
+							'status': 'de'
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+							getzonemoods()
+						}
+					});
+				})
+				//添加关闭评论事件
+				$(".moods_close").click(function() {
+					//开关切换
+					this.index = $(this).parents("li").attr("cancomment");
+					// 1 开启  0 关闭 
+					if(this.index == 1) {
+						$(this).html("关闭评论");
+						//	$(this).parents().siblings(".moods_commt").css("background-color", "darkcyan");
+						$(this).parents().siblings(".moods_commt").hover(function() {
+							$(this).css("background-color", "534846");
+						}, function() {
+							$(this).css("background-color", "darkcyan");
+						})
+						this.index--;
+					} else {
+						$(this).html("开启评论");
+						$(this).parents().siblings(".moods_commt").css("background-color", "black");
+						this.index++;
+					}
+					$(this).parents("li").attr("cancomment", this.index);
+					//切换完毕
+
+					var moodID = $(this).parents("li").attr("mood");
+					this.index = this.index;
+					$.ajax({
+						type: "post",
+						url: "php/Zonemoods_CZ.php",
+						data: {
+							'username': username,
+							'moodID': moodID,
+							'closeComm': this.index,
+							'status': 'cc'
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+							getzonemoods()
+						}
+					});
+
+				})
+				//添加只有我能看事件
+				$(".moods_justme").click(function() {
+					//开关切换
+					this.index = $(this).parents("li").attr("alone");
+					// 1 开启  0 关闭 
+					if(this.index == 1) {
+						$(this).html("心情状态:公开");
+						this.index--;
+					} else {
+						$(this).html("心情状态:私密");
+						this.index++;
+					}
+					$(this).parents("li").attr("alone", this.index);
+					//切换完毕
+
+					var moodID = $(this).parents("li").attr("mood");
+					this.index = this.index;
+					$.ajax({
+						type: "post",
+						url: "php/Zonemoods_CZ.php",
+						data: {
+							'username': username,
+							'moodID': moodID,
+							'alone': this.index,
+							'status': 'ms'
+						},
+						success: function(data) {
+							var data = JSON.parse(data);
+							console.log(data)
+							//getzonemoods()
+						}
+					});
+
+				})
+				//评论事件
+				$(".moods_commt").click(function() {
+					var moodID = $(this).parents("li").attr("mood");
+					//console.log(moodID);
+					//传递评论   这里测试用  plx    之后转到  pl
+					location.href = "zone_mood_pl.html#" + moodID;
+					//localStorage.getItem("WhitchOne");
+				})
+
+			}
+
+			//添加一些事件  
+			function AddSomeEvent() {
+
+				for(var i = 0; i < $(".moods-inner li").length; i++) {
+					//console.log($($(".moods-inner li")[i]).children().find(".moods_close").get(0));
+					if($($(".moods-inner li")[i]).attr("alone") == 1) {
+						$($(".moods-inner li")[i]).children().find(".moods_justme").html("心情状态:私密");
+					} else {
+						$($(".moods-inner li")[i]).children().find(".moods_justme").html("心情状态:公开");
+					}
+
+					if($($(".moods-inner li")[i]).attr("cancomment") == 1) {
+						$($(".moods-inner li")[i]).children().find(".moods_close").html("开启评论");
+						$($(".moods-inner li")[i]).children().find(".moods_commt").css("background-color", "black");
+					} else {
+						$($(".moods-inner li")[i]).children().find(".moods_close").html("关闭评论");
+						$($(".moods-inner li")[i]).children().find(".moods_commt").css("background-color", "darkcyan");
+					}
+
+				}
+
+				$(".zonemoodcz,.whengo").mousemove(function() {
+					$(this).children(".moods-down").css("display", "block");
+				})
+				$(".zonemoodcz,.whengo").mouseout(function() {
+					$(this).children(".moods-down").css("display", "none");
+				})
+				$(".moods-down").mouseout(function() {
+					$(this).css("display", "none");
+				})
+			}
+		</script>
+		<!--添加侧栏事件 -->
+		<script src="js/AddEvent_Zone.js" type="text/javascript" charset="utf-8"></script>
+
+		<!--获取用户信息！-->
+		<script src="js/Load_firstdo.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var p=1;   //函数节流 
+				if (username != visiter) {
+							$(".writemoods").hide();
+						}
+		</script>
+	</body>
+
+</html>
